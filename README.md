@@ -7,17 +7,17 @@ Repo to easily sync flask projects between vagrant VMs.
 
 As simple as:  
 
-> sudo apt-get install virtualbox
-> sudo apt-get install vagrant
-> vagrant init bento/ubuntu-16.04 (or whatever vm you want)
-> vagrant up
+> sudo apt-get install virtualbox  
+> sudo apt-get install vagrant  
+> vagrant init bento/ubuntu-16.04 (or whatever vm you want)  
+> vagrant up  
 > vagrant ssh 
 
 #### Flask
 
-> sudo apt-get update (5/7 Stallmans would recommend)
-> sudo apt-get install python-pip
-> pip install Flask
+> sudo apt-get update (5/7 Stallmans would recommend)  
+> sudo apt-get install python-pip  
+> pip install Flask  
 
 
 ## Usage
