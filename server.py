@@ -18,6 +18,10 @@ def hello(name = None):
 def image():
 	return ''
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 
 @app.route ('/mandelbrot')
 def mandelbrot():
@@ -28,6 +32,6 @@ def mandelbrot():
 	width = int(request.args.get('width'))
 	it = int(request.args.get('it'))
 	fileName = "mandelbrot-"+str(x1)+"_"+str(x2)+"-"+str(x2)+"_"+str(y2)+"-w"+str(width)+"-it"+str(it)+".png"
-	mandelbrotData = {'imageFile': fileName, 'x1': x1, 'x2': x2, 'y1': y1, 'y2': y2, 'width': width, 'it': it} 
+	mandelbrotData = {'imageFile': fileName, 'x1': x1, 'x2': x2, 'y1': y1, 'y2': y2, 'width': width, 'it': it}
 	renderizaMandelbrot(x1,y1,x2,y2,width,it, fileName)
 	return render_template('mandelbrot.html', mandelbrotData = mandelbrotData)
