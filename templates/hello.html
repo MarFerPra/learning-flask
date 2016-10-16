@@ -1,0 +1,12 @@
+<!doctype html>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='stylesheets/styles.css') }}">
+
+<title>This is an awesome template.</title>
+
+{% if name %}
+	<h1 class="red-colored">Hello {{ name }}!</h1>
+{% else %}
+	<h1> Hello Stranger! </h1>
+{% endif %}
+
+<img src="{{ url_for('static', filename='assets/images/image.jpg') }}">
