@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, url_for
 from mandelbrot import *
 from jinja2 import Environment, PackageLoader
 env = Environment(loader=PackageLoader(__name__, 'templates'))
@@ -15,7 +15,10 @@ def index():
 @app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
-    return env.get_template('hello.html').render(name=name)
+    stylesheet_url = url_for('static',filename='styles.css')
+    image_url = url_for('static', filename='assets/images/image.jpg')
+    urls = {'stylesheet': stylesheet_url, 'image': image_url}
+    return env.get_template('hello.html').render(name=name, urls = urls)
 
 
 @app.route('/image')

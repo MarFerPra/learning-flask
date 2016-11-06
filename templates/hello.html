@@ -1,5 +1,5 @@
 <!doctype html>
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='stylesheets/styles.css') }}">
+<link rel= "stylesheet" type= "text/css" href= "{{ urls['stylesheet'] }}">
 
 <title>This is an awesome template.</title>
 
@@ -9,4 +9,4 @@
 	<h1> Hello Stranger! </h1>
 {% endif %}
 
-<img src="{{ url_for('static', filename='assets/images/image.jpg') }}">
+<img src="{{ urls['image'] }}">
