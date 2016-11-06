@@ -57,26 +57,15 @@ def login():
 @flask_login.login_required
 def protected():
     current_user = flask_login.current_user
-    stylesheet_url = url_for('static',filename='styles.css')
-    logo_url = url_for('static', filename='assets/images/web-logo.png')
-    flask_url = url_for('static', filename='assets/images/flask-logo.png')
-    image_url = url_for('static', filename='assets/images/image.jpg')
-    urls = {'stylesheet': stylesheet_url, 'logo': logo_url, 'flask_logo': flask_url , 'image': image_url}
-
-    return env.get_template('homepage.html').render(urls = urls, current_user = current_user)
+    return env.get_template('homepage.html').render(current_user = current_user)
 
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
 
     current_user = flask_login.current_user
-    stylesheet_url = url_for('static',filename='styles.css')
-    logo_url = url_for('static', filename='assets/images/web-logo.png')
-    flask_url = url_for('static', filename='assets/images/flask-logo.png')
-    image_url = url_for('static', filename='assets/images/image.jpg')
-    urls = {'stylesheet': stylesheet_url, 'logo': logo_url, 'flask_logo': flask_url , 'image': image_url}
 
-    return env.get_template('homepage.html').render(urls = urls, current_user = current_user)
+    return env.get_template('homepage.html').render(current_user = current_user)
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -85,55 +74,35 @@ def unauthorized_handler():
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     current_user = flask_login.current_user
-    stylesheet_url = url_for('static',filename='styles.css')
-    logo_url = url_for('static', filename='assets/images/web-logo.png')
-    flask_url = url_for('static', filename='assets/images/flask-logo.png')
-    image_url = url_for('static', filename='assets/images/image.jpg')
-    urls = {'stylesheet': stylesheet_url, 'logo': logo_url, 'flask_logo': flask_url , 'image': image_url}
 
     if flask.request.method == 'GET':
-        return env.get_template('signup.html').render(urls = urls, current_user = current_user)
+        return env.get_template('signup.html').render(current_user = current_user)
 
     elif flask.request.method == 'POST':
         username = flask.request.form['username']
         password = flask.request.form['password']
         result = setPassword(username, password)
-        return env.get_template('homepage.html').render(urls = urls, current_user = current_user)
+        return env.get_template('homepage.html').render(current_user = current_user)
 
 
 
 @app.route('/')
 def index():
-    stylesheet_url = url_for('static',filename='styles.css')
-    logo_url = url_for('static', filename='assets/images/web-logo.png')
-    image_url = url_for('static', filename='assets/images/image.jpg')
-    flask_url = url_for('static', filename='assets/images/flask-logo.png')
     current_user = flask_login.current_user
-    urls = {'stylesheet': stylesheet_url, 'logo': logo_url, 'flask_logo': flask_url , 'image': image_url}
-    return env.get_template('homepage.html').render(urls = urls, current_user = current_user)
+    return env.get_template('homepage.html').render(current_user = current_user)
 
 
 @app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
-    stylesheet_url = url_for('static',filename='styles.css')
-    logo_url = url_for('static', filename='assets/images/web-logo.png')
-    flask_url = url_for('static', filename='assets/images/flask-logo.png')
-    image_url = url_for('static', filename='assets/images/image.jpg')
     current_user = flask_login.current_user
-    urls = {'stylesheet': stylesheet_url, 'logo': logo_url, 'flask_logo': flask_url , 'image': image_url}
-    return env.get_template('hello.html').render(name=name, urls = urls, current_user = current_user)
+    return env.get_template('hello.html').render(name=name, current_user = current_user)
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    stylesheet_url = url_for('static',filename='styles.css')
-    logo_url = url_for('static', filename='assets/images/web-logo.png')
-    image_url = url_for('static', filename='assets/images/image.jpg')
-    flask_url = url_for('static', filename='assets/images/flask-logo.png')
     current_user = flask_login.current_user
-    urls = {'stylesheet': stylesheet_url, 'logo': logo_url, 'flask_logo': flask_url , 'image': image_url}
-    return env.get_template('404.html').render(urls = urls, current_user = current_user), 404
+    return env.get_template('404.html').render(current_user = current_user), 404
 
 
 @app.route('/mandelbrot')
