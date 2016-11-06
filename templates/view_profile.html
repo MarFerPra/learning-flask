@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block body %}
+<div class="container-fluid">
+    <div class="row content content-wrapper">
+        {% include "partials/left_menu.html" %}
+
+        <div class="col-sm-9 body-wrapper">
+            <h4><bold>VIEW PROFILE</bold></h4>
+            <div>
+              <p><bold>Username:</bold> {{current_user.id}}</p>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
