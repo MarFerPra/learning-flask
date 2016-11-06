@@ -46,3 +46,8 @@ footer {
 .content-wrapper {
   margin-top: 15px;
 }
+
+.signup-form {
+  margin-left: 50px;
+  width: 50%;
+}
