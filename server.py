@@ -5,19 +5,24 @@ env = Environment(loader=PackageLoader(__name__, 'templates'))
 
 app = Flask(__name__)
 
-# Simple static content on index.
-
 @app.route('/')
 def index():
-    return env.get_template('homepage.html').render()
+    stylesheet_url = url_for('static',filename='styles.css')
+    logo_url = url_for('static', filename='assets/images/web-logo.png')
+    image_url = url_for('static', filename='assets/images/image.jpg')
+    flask_url = url_for('static', filename='assets/images/flask-logo.png')
+    urls = {'stylesheet': stylesheet_url, 'logo': logo_url, 'flask_logo': flask_url , 'image': image_url}
+    return env.get_template('homepage.html').render(urls = urls)
 
 
 @app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
     stylesheet_url = url_for('static',filename='styles.css')
+    logo_url = url_for('static', filename='assets/images/web-logo.png')
+    flask_url = url_for('static', filename='assets/images/flask-logo.png')
     image_url = url_for('static', filename='assets/images/image.jpg')
-    urls = {'stylesheet': stylesheet_url, 'image': image_url}
+    urls = {'stylesheet': stylesheet_url, 'logo': logo_url, 'flask_logo': flask_url , 'image': image_url}
     return env.get_template('hello.html').render(name=name, urls = urls)
 
 

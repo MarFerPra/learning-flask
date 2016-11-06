@@ -1,1 +1,48 @@
-h1 { color: red; }
+h1 { font-weight: strong; }
+
+footer {
+  background-color: rgba(51, 122, 183, 0.58);
+}
+
+.footer-text {
+  font-weight: strong;
+  margin-top: 10px;
+}
+
+.login-form {
+  margin-top: 15px;
+  padding: 20px;
+}
+
+.username-input {
+  padding: 5px;
+
+}
+
+.password-input {
+  padding: 5px;
+
+}
+
+.login-btn {
+  padding: 5px;
+}
+
+.header {
+  width: 100%;
+  border-bottom:1px solid #ccc;
+}
+
+.header-title{
+  display: inline-block;
+}
+
+.logo-img {
+  margin-right:25px;
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+
+.content-wrapper {
+  margin-top: 15px;
+}
