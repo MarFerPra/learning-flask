@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Index page'
+    return env.get_template('homepage.html').render()
 
 
 @app.route('/hello/')
@@ -28,7 +28,7 @@ def image():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return env.get_template('404.html'), 404
+    return env.get_template('404.html').render(), 404
 
 
 @app.route('/mandelbrot')

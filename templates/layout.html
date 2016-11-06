@@ -1,0 +1,24 @@
+<!doctype html>
+
+<head>
+    {% block head %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% endblock %}
+</head>
+
+<html lang="en">
+<header>
+    {% block header %} {% endblock %}
+</header>
+
+<body>
+    {% block body %} {% endblock %}
+</body>
+
+{% block footer %}
+  {% include "partials/footer.html" %}
+{% endblock %}
+
+</html>
