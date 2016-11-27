@@ -1,20 +1,30 @@
 from flask import Flask, request, url_for
-from mandelbrot import *
-from dbhandler import *
 from jinja2 import Environment, PackageLoader
 import flask_login
 import flask
-from flask.ext import shelve
+from flask import jsonify
+from mongoengine import *
+
+connect('database')
 
 env = Environment(loader=PackageLoader(__name__, 'templates'))
 
 app = Flask(__name__)
 app.secret_key = 'itsasecret'
-app.config['SHELVE_FILENAME'] = 'shelve.db'
-shelve.init_app(app)
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
+
+
+class Users(Document):
+    name = StringField(max_length=20, required=True, unique=True)
+    password = StringField(max_length=10, required=True)
+
+
+class Restaurants(Document):
+    name = StringField(max_length=50, required=True, unique=True)
+    description = StringField(max_length=300)
+    rating = FloatField(min_value=0, max_value=100)
 
 
 class User(flask_login.UserMixin):
@@ -22,24 +32,50 @@ class User(flask_login.UserMixin):
 
 
 def getPassword(username):
-    db = shelve.get_shelve('c')
-    try:
-        value = str(db[str(username)])
-    except Exception:
-        value = ""
-    db.close()
-    return value
+    user = Users.objects(name=username).first()
+    if(user):
+        return user.password
+    else:
+        return ""
 
 
 def setPassword(username, password):
-    db = shelve.get_shelve('c')
-    db[str(username)] = password
-    try:
-        value = (password == str(db[str(username)]))
-    except Exception:
-        value = false
-    db.close()
-    return value
+    user = Users(name=username, password=password)
+
+    user.save()
+    saved_user = Users.objects(name=username).first()
+
+    if(saved_user.password == password):
+        return True
+    else:
+        return False
+
+
+def createRestaurant(name_val, description_val="", rating_val=0):
+    print "HELLO"
+    restaurant = Restaurants(name=name_val, description=description_val, rating=rating_val)
+    restaurant.save()
+    saved_restaurant = Restaurants.objects(name=name_val).first()
+
+    if(saved_restaurant.name == name_val):
+        return True
+    else:
+        return False
+
+
+def rateRestaurant(name, rating):
+    restaurant = Restaurants.objects(name=name).first()
+    restaurant.rating += rating
+    restaurant.save()
+
+
+def getRestaurant(name):
+    return Restaurants.objects(name=name).first()
+
+
+def getRestaurantPage(page_number, items_per_page=10):
+    offset = (page_number - 1) * items_per_page
+    return Restaurants.objects.skip(offset).limit(items_per_page)
 
 
 @login_manager.user_loader
@@ -118,10 +154,47 @@ def signup():
         else:
             return env.get_template('404.html').render(current_user=None), 404
 
+
 @app.route('/')
 def index():
     current_user = flask_login.current_user
     return env.get_template('homepage.html').render(current_user=current_user)
+
+
+@app.route('/restaurants')
+def restaurants():
+    current_user = flask_login.current_user
+    return env.get_template('restaurants.html').render(current_user=current_user)
+
+
+@app.route('/create_restaurants', methods=['GET', 'POST'])
+def create_restaurants():
+    current_user = flask_login.current_user
+
+    if flask.request.method == 'GET':
+        return env.get_template('create_restaurants.html').render(current_user=current_user)
+
+    elif flask.request.method == 'POST':
+
+        current_user = flask_login.current_user
+        name = flask.request.form['name']
+        description = flask.request.form['description'] or ""
+
+        result = createRestaurant(name, description)
+
+        if result:
+            return env.get_template('restaurants.html').render(current_user=current_user)
+        else:
+            return env.get_template('404.html').render(current_user=current_user), 404
+
+
+@app.route('/get_restaurants', methods=['GET'])
+def get_restaurants():
+    page_num = flask.request.args.get('page', 0, type=int)
+    items_per_page = flask.request.args.get('per', 0, type=int)
+
+    items = getRestaurantPage(page_num, items_per_page)
+    return items.to_json()
 
 
 @app.route('/view_profile')
@@ -158,23 +231,13 @@ def hello(name=None):
     return env.get_template('hello.html').render(name=name, current_user=current_user)
 
 
+@app.route('/maps')
+def maps():
+    current_user = flask_login.current_user
+    return env.get_template('maps.html').render(current_user=current_user)
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     current_user = flask_login.current_user
     return env.get_template('404.html').render(current_user=current_user), 404
-
-
-@app.route('/mandelbrot')
-def mandelbrot():
-    x1 = int(request.args.get('x1'))
-    y1 = int(request.args.get('y1'))
-    x2 = int(request.args.get('x2'))
-    y2 = int(request.args.get('y2'))
-    width = int(request.args.get('width'))
-    it = int(request.args.get('it'))
-    fileName = "mandelbrot-" + str(x1) + "_" + str(x2) + "-" + str(
-        x2) + "_" + str(y2) + "-w" + str(width) + "-it" + str(it) + ".png"
-    mandelbrotData = {'imageFile': fileName, 'x1': x1,
-                      'x2': x2, 'y1': y1, 'y2': y2, 'width': width, 'it': it}
-    renderizaMandelbrot(x1, y1, x2, y2, width, it, fileName)
-    return env.get_template('mandelbrot.html').render(mandelbrotData=mandelbrotData)

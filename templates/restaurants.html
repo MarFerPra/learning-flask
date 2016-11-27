@@ -1,0 +1,17 @@
+{% extends "layout.html" %} {% block body %}
+<div class="container-fluid">
+    <div class="row content content-wrapper">
+        {% include "partials/left_menu.html" %}
+
+        <div class="col-sm-9 body-wrapper text-center">
+            <h4><bold>Restaurants</bold></h4>
+
+            <div id="restaurants"></div>
+
+        </div>
+    </div>
+
+
+    <script src="/static/components/restaurants.jsx" type="text/jsx">
+
+    {% endblock %}
