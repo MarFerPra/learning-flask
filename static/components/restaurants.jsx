@@ -49,12 +49,13 @@ var Restaurants = React.createClass({
 
 var RestaurantItem = React.createClass({
   render: function(){
+    console.log(this.props.data);
     return(
       <div className="col-sm-6">
           <div className="panel panel-primary">
-              <div className="panel-heading">Example panel</div>
-              <div className="panel-body"></div>
-              <div className="panel-footer">Example footer</div>
+              <div className="panel-heading">{this.props.data.name}</div>
+              <div className="panel-body">{this.props.data.description}</div>
+              <div className="panel-footer">Rating: {this.props.data.rating}</div>
           </div>
       </div>
     )

@@ -52,7 +52,6 @@ def setPassword(username, password):
 
 
 def createRestaurant(name_val, description_val="", rating_val=0):
-    print "HELLO"
     restaurant = Restaurants(name=name_val, description=description_val, rating=rating_val)
     restaurant.save()
     saved_restaurant = Restaurants.objects(name=name_val).first()
